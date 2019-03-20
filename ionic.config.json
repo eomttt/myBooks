@@ -1,5 +1,7 @@
 {
   "name": "myBook",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }
