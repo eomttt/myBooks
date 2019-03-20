@@ -1,0 +1,31 @@
+my-book {
+
+}
+
+.mybook-container {
+  width: 75%;
+  padding: 5%;
+  margin-bottom: 1em;
+  background-color: rgb(193, 193, 193);
+}
+
+.mybook-content {
+  width: 100%;
+}
+
+.mybook-cc-title-container {
+  min-height: 1em;
+  margin-bottom: .5em;
+  font-weight: bolder;
+}
+
+.mybook-cc-image-container {
+  margin-bottom: .5em;
+  img {
+    width: 100%;
+  }
+}
+
+.mybook-cc-text-container {
+  min-height: 3em;
+}

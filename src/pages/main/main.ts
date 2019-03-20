@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the MainPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+// Import providers
+import { BooksProvider } from '../../providers/books/books';
+
 
 @IonicPage()
 @Component({
@@ -15,12 +12,43 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MainPage {
 
+  nowView = 'main';
+
+  myBooks = [];
+
   constructor(public navCtrl: NavController,
-              public navParams: NavParams) {
+              public navParams: NavParams,
+              private booksPvdr: BooksProvider) {
+  }
+
+  ionViewWillLoad() {
+    this._active();
   }
 
   ionViewDidLoad() {
 
+  }
+
+  /**
+   * Private function
+   */
+
+  private async _getMyBooks() {
+    try {
+      let books = await this.booksPvdr.getMyBooks();
+
+      this._setMyBooks(books);
+    } catch(error) {
+
+    }
+  }
+
+  private _setMyBooks(newBooks) {
+    this.myBooks = this.myBooks.concat(newBooks);
+  }
+
+  private _active() {
+    this._getMyBooks();
   }
 
 }

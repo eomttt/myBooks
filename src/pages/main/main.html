@@ -1,4 +1,8 @@
 <ion-content padding>
-
+  <div class="main-mybooks-list">
+    <div class="main-mybook" *ngFor="let myBook of myBooks; let i = index">
+      <my-book [book]=myBook [index]=i></my-book>
+    </div>
+  </div>
 </ion-content>
-<underbar></underbar>
+<underbar [nowView]=nowView></underbar>

@@ -1,0 +1,12 @@
+<div class="mybook-container" [ngStyle]="setMyBookStyle(index)">
+  <div class="mybook-content">
+    <div class="mybook-cc-title-container">
+      {{book.title}}
+    </div>
+    <div class="mybook-cc-image-container">
+      <img src={{book.image}}/>
+    </div>
+    <div class="mybook-cc-text-container" [innerHTML]=book.text>
+    </div>
+  </div>
+</div>

@@ -3,6 +3,8 @@ underbar {
   bottom: 0;
   height: 4.5em;
   width: 100%;
+  background-color: white;
+  z-index: 100;
 }
 
 .underbar-container {
@@ -19,11 +21,18 @@ underbar {
   height: 100%;
   display: inline-block;
   vertical-align: top;
+
+}
+
+.underbar-cc-image {
+  height: 65%;
+  border-radius: 50%;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   img {
-    height: 60%;
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100%;
+    padding: 10%;
   }
 }

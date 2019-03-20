@@ -1,19 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-/**
- * Generated class for the UnderbarComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'underbar',
   templateUrl: 'underbar.html'
 })
 export class UnderbarComponent {
 
+  _nowView: any;
+
+  @Input()
+  set nowView(data) {
+    this._nowView = data;
+  }
+  get nowView() {
+    return this._nowView;
+  }
+
   constructor() {
 
+  }
+
+  public isNowView(view) {
+    return this.nowView === view;
+  }
+
+  public setShowViewStyle() {
+    return {'background-color': 'black'};
   }
 
 }

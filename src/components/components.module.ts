@@ -3,10 +3,22 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 
 import { UnderbarComponent } from './underbar/underbar';
+import { MyBookComponent } from './my-book/my-book';
 @NgModule({
-	declarations: [UnderbarComponent],
-	imports: [CommonModule, IonicModule],
-	exports: [UnderbarComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+	declarations: [
+      UnderbarComponent,
+      MyBookComponent
+  ],
+	imports: [
+    CommonModule,
+    IonicModule
+  ],
+	exports: [
+    UnderbarComponent,
+    MyBookComponent
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class ComponentsModule {}

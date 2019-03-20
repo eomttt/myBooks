@@ -1,10 +1,23 @@
 <div class="underbar-container">
   <div class="underbar-c-content">
+    <div class="underbar-cc-image" *ngIf="!isNowView('main')">
+      <img src="assets/imgs/navbar-home.svg"/>
+    </div>
+    <div class="underbar-cc-image" *ngIf="isNowView('main')" [ngStyle]="setShowViewStyle()">
+      <img src="assets/imgs/navbar-home-click.svg"/>
+    </div>
   </div>
   <div class="underbar-c-content">
-    <img src="assets/imgs/navbar-plus.svg"/>
+    <div class="underbar-cc-image">
+        <img src="assets/imgs/navbar-plus.svg"/>
+    </div>
   </div>
   <div class="underbar-c-content">
-    <img src="assets/imgs/navbar-profile.svg"/>
+    <div class="underbar-cc-image" *ngIf="!isNowView('profile')">
+      <img src="assets/imgs/navbar-profile.svg"/>
+    </div>
+    <div class="underbar-cc-image" *ngIf="isNowView('profile')" [ngStyle]="setShowViewStyle()">
+      <img src="assets/imgs/navbar-profile-click.svg"/>
+    </div>
   </div>
 </div>
