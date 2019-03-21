@@ -9,6 +9,9 @@ import { Crop } from '@ionic-native/crop';
 import { File } from '@ionic-native/file';
 import { Base64 } from '@ionic-native/base64';
 
+import { AngularFireModule } from '@angular/fire';
+import { firebaseConfig } from '../environment';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { MyApp } from './app.component';
 import { ComponentsModule } from '../components/components.module';
@@ -32,6 +35,8 @@ import { BooksProvider } from '../providers/books/books';
     HttpClientModule,
     AngularCropperjsModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireStorageModule,
     MainPageModule,
     AddBookPageModule,
     ProfilePageModule

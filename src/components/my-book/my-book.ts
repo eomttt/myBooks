@@ -5,6 +5,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Crop, CropOptions } from '@ionic-native/crop';
 import { File } from '@ionic-native/file';
 import { Base64 } from '@ionic-native/base64';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'my-book',
@@ -63,7 +64,8 @@ export class MyBookComponent {
               private crop: Crop,
               private file: File,
               private base64: Base64,
-              private events: Events) {
+              private events: Events,
+              private angularFbSt: AngularFireStorage) {
 
   }
 
@@ -105,11 +107,16 @@ export class MyBookComponent {
   public async setDirectImage() {
     try {
       let imageUri: any = await this._getImageFromLibrary();
-      console.log("AAAA", imageUri);
+      console.log('Library image uri: ', imageUri);
+      
       let croppedImageUri: any = await this._openCropImage(imageUri);
-      console.log("BBBB", croppedImageUri);
+      console.log('Cropped image uri: ', croppedImageUri);
+      
       let imageFile: any = await this._resolveLocalFileSystemUrl(croppedImageUri);
-      console.log("CCC", imageFile);
+      console.log('Image file: ', imageFile);
+      
+      let uploadedRes = await this._setToImageInDb(imageFile);
+      console.log('Uploaded image result: ', uploadedRes);
 
       let newImageUri = null;
 
@@ -122,7 +129,7 @@ export class MyBookComponent {
 
       this.bookInputData.image = newImageUri;
 
-      console.log("DDDD", newImageUri);
+      console.log('New image uri: ', newImageUri);
     } catch(error) {
       if (error === 'No Image Selected') {
         console.log('No image selected');
@@ -191,10 +198,36 @@ export class MyBookComponent {
         let fileEntry: any = await this.file.resolveLocalFilesystemUrl(url);
 
         fileEntry.file((fileData) => {
-          resolve(fileData);
+          const fileReader = new FileReader();
+          fileReader.onloadend = (evt: any) => {
+            console.log('File Reader Result: ', evt);
+            let blob = new Blob([evt.target.result], { type: "image/jpeg" });
+            resolve(blob);
+          };
+          fileReader.onerror = function (error) {
+              console.log("Failed file read: " + error.toString());
+              reject(error)
+          };
+          fileReader.readAsArrayBuffer(fileData);
         });
       } catch(error) {
         console.log('Resolve local file system error. ', error);
+        reject(error);
+      }
+    });
+  }
+
+  private _setToImageInDb(imageFile) {
+    return new Promise(async (resolve, reject) => {
+
+      let storageRef = this.angularFbSt.storage.ref();
+      let imageRef = storageRef.child('test');
+
+      try {
+        let result = await imageRef.put(imageFile);
+        resolve(result);
+      } catch(error) {
+        console.log('Set image in database.', error);
         reject(error);
       }
     });
