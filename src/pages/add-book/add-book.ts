@@ -15,11 +15,33 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AddBookPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  upperbarLeftText = '취소';
+  upperbarRightText = '확인';
+
+  newAddingBook = {};
+
+  findBookList = [];
+  showFindBookList = false;
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddBookPage');
+  }
+
+  public findBook(data) {
+    this.findBookList = this.findBookList.concat(data);
+    this.showFindBookList = true;
+  }
+
+  public clickCancleButton() {
+
+  }
+
+  public clickConfirmButton() {
+
   }
 
 }

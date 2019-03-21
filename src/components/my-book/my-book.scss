@@ -26,6 +26,90 @@ my-book {
   }
 }
 
+.mybook-cc-input-image {
+  width: 100%;
+  height: 25em;
+  position: relative;
+  background-color: white;
+}
+
 .mybook-cc-text-container {
   min-height: 3em;
+}
+
+.mybook-cc-title-input {
+  white-space: nowrap;
+}
+
+.mybook-cc-find-input {
+  width: 80%;
+  height: 1.5em;
+  margin-right: 5%;
+  background-color: transparent;
+  display: inline-block;
+  border: initial;
+  padding: initial;
+  vertical-align: top;
+}
+
+.mybook-cc-find-button {
+  width: 15%;
+  height: 1.5em;
+  position: relative;
+  display: inline-block;
+  border: 1px solid black;
+  vertical-align: top;
+}
+
+.mybook-cc-fb-text {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: black;
+}
+
+.mybook-cc-find-input::placeholder {
+  color: gray;
+}
+
+.mybook-cc-textarea {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: initial;
+}
+
+.mybook-cc-textarea::placeholder {
+  color: gray;
+}
+
+.mybook-cc-ii-top {
+  width: 100%;
+  height: 50%;
+  position: relative;
+}
+
+.mybook-cc-ii-bottom {
+  width: 100%;
+  height: 50%;
+  position: relative;
+}
+
+.mybook-cc-ii-content {
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+  text-align: center;
+  color: gray;
+  font-size: 1.3em;
+}
+
+.mybook-cc-ii-explicate {
+  position: absolute;
+  top: .5em;
+  left: .5em;
+  color: gray;
 }

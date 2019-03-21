@@ -1,0 +1,47 @@
+upperbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5em;
+  background-color: white;
+  z-index: 100;
+}
+
+.upperbar-container {
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.upperbar-c-left {
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.upperbar-c-right {
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.upperbar-c-text {
+  position: absolute;
+  width: 100%;
+  text-align: left;
+  padding-left: 1em;
+  top: 60%;
+  transform: translateY(-50%);
+  color: #488aff;
+  font-size: 1.2em;
+}
+
+.upperbar-c-text-right {
+  padding-left: 0em;
+  padding-right: 1em;
+  text-align: right;
+}

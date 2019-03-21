@@ -1,3 +1,19 @@
 page-add-book {
 
 }
+
+.addbook-container {
+  margin-top: 8.5em;
+  padding-bottom: 7em;
+}
+
+.addbook-explicate-container {
+  background-color: white;
+  z-index: 100;
+  width: 100%;
+  text-align: right;
+  position: fixed;
+  padding-bottom: 2em;
+  right: .5em;
+  bottom: 0em;
+}

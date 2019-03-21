@@ -4,10 +4,16 @@ import { IonicModule } from 'ionic-angular';
 
 import { UnderbarComponent } from './underbar/underbar';
 import { MyBookComponent } from './my-book/my-book';
+import { UpperbarComponent } from './upperbar/upperbar';
+import { FindBookComponent } from './find-book/find-book';
+import { FindBooksComponent } from './find-books/find-books';
 @NgModule({
 	declarations: [
-      UnderbarComponent,
-      MyBookComponent
+    UnderbarComponent,
+    MyBookComponent,
+    UpperbarComponent,
+    FindBookComponent,
+    FindBooksComponent
   ],
 	imports: [
     CommonModule,
@@ -15,7 +21,10 @@ import { MyBookComponent } from './my-book/my-book';
   ],
 	exports: [
     UnderbarComponent,
-    MyBookComponent
+    MyBookComponent,
+    UpperbarComponent,
+    FindBookComponent,
+    FindBooksComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

@@ -1,12 +1,37 @@
 <div class="mybook-container" [ngStyle]="setMyBookStyle(index)">
   <div class="mybook-content">
     <div class="mybook-cc-title-container">
-      {{book.title}}
+      <div *ngIf="!!book.title">
+        {{book.title}}
+      </div>
+      <div class="mybook-cc-title-input" *ngIf="!!!book.title">
+        <input class="mybook-cc-find-input" placeholder="제목을 입력해주세요." ([ngModel])="bookInputData.title"/>
+      </div>
     </div>
     <div class="mybook-cc-image-container">
-      <img src={{book.image}}/>
+      <img src={{book.image}} *ngIf="!!book.image"/>
+      <div class="mybook-cc-input-image" *ngIf="!!!book.image">
+        <div class="mybook-cc-ii-top" (click)=researchBook()>
+          <div class="mybook-cc-ii-content">
+            책 검색하기
+          </div>
+        </div>
+        <div class="mybook-cc-ii-bottom" (click)=setDirectImage()>
+          <div class="mybook-cc-ii-content">
+            직접 올리기
+          </div>
+        </div>
+        <div class="mybook-cc-ii-explicate">
+          * 사진 첨부
+        </div>
+      </div>
     </div>
-    <div class="mybook-cc-text-container" [innerHTML]=book.text>
+    <div class="mybook-cc-text-container">
+      <div [innerHTML]=book.text *ngIf="!!book.text">
+      </div>
+      <div *ngIf="!!!book.text">
+        <textarea class="mybook-cc-textarea" placeholder="한줄 평을 적어보세요." ([ngModel])="bookInputData.text"></textarea>
+      </div>
     </div>
   </div>
 </div>
