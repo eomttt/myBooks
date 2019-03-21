@@ -1,5 +1,5 @@
 <div class="booklist-container">
-  <div *ngFor="let book of bookList">
-    <find-book [book]=book></find-book>
+  <div *ngFor="let book of bookList; let i = index">
+    <find-book [book]=book [index]=i (select)=selectedBook($event)></find-book>
   </div>
 </div>

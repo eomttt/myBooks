@@ -1,3 +1,18 @@
-<div>
-
+<div class="findbook-container" (click)=selectBook() [ngStyle]=setSelectedStyle()>
+  <div class="findbook-content">
+    <div class="findbook-cc-left">
+      <img src={{book.thumbnail}}>
+    </div>
+    <div class="findbook-cc-right">
+      <div class="findbook-ccr-top">
+        제목: {{book.title}}
+      </div>
+      <div class="findbook-ccr-mid">
+        저자: {{book.authors[0]}}
+      </div>
+      <div class="findbook-ccr-bottom">
+        내용: {{book.contents}}
+      </div>
+    </div>
+  </div>
 </div>

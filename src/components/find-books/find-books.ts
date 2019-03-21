@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'find-books',
@@ -16,7 +16,14 @@ export class FindBooksComponent {
     return this._bookList;
   }
 
+  @Output()
+  select = new EventEmitter;
+
   constructor() {
+  }
+
+  public selectedBook(data) {
+    this.select.emit(data);
   }
 
 }

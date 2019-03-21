@@ -1,3 +1,44 @@
 find-book {
 
 }
+
+.findbook-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2em;
+  border-bottom: 1px solid gray;
+}
+
+.findbook-content {
+  padding: .5em;
+  white-space: nowrap;
+}
+
+.findbook-cc-left {
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+  img {
+    width: 100%;
+  }
+}
+
+.findbook-cc-right {
+  width: 70%;
+  padding-left: 3%;
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.findbook-ccr-top {
+  margin-bottom: .5em;
+}
+
+.findbook-ccr-mid {
+  margin-bottom: .5em;
+}
+
+.findbook-ccr-bottom {
+  margin-bottom: .5em;
+}

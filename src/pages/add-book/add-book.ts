@@ -44,4 +44,12 @@ export class AddBookPage {
 
   }
 
+  public selectedBook(index) {
+    for (let i=0, len=this.findBookList.length; i<len; i++) {
+      this.findBookList[i].select = false;
+    }
+
+    this.findBookList[index].select = true;
+  }
+
 }
