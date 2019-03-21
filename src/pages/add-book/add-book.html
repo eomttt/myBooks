@@ -5,7 +5,7 @@
   </div>
   <div class="addbook-container">
     <div class="addbook-content">
-      <my-book [book]=newAddingBook [index]=null (findBook)=findBook($event) *ngIf=!showFindBookList></my-book>
+      <my-book [book]=newAddingBook [index]=null (findBook)=findBook($event) (setMyBook)=setMyBook($event) *ngIf=!showFindBookList></my-book>
       <find-books [bookList]=findBookList (select)=selectedBook($event) *ngIf=showFindBookList></find-books>
     </div>
   </div>

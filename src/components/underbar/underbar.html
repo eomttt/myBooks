@@ -1,5 +1,5 @@
 <div class="underbar-container">
-  <div class="underbar-c-content">
+  <div class="underbar-c-content" (click)="openMainPage()">
     <div class="underbar-cc-image" *ngIf="!isNowView('main')">
       <img src="assets/imgs/navbar-home.svg"/>
     </div>
@@ -7,12 +7,12 @@
       <img src="assets/imgs/navbar-home-click.svg"/>
     </div>
   </div>
-  <div class="underbar-c-content">
+  <div class="underbar-c-content" (click)="openAddBookPage()">
     <div class="underbar-cc-image">
         <img src="assets/imgs/navbar-plus.svg"/>
     </div>
   </div>
-  <div class="underbar-c-content">
+  <div class="underbar-c-content" (click)="openProfilePage()">
     <div class="underbar-cc-image" *ngIf="!isNowView('profile')">
       <img src="assets/imgs/navbar-profile.svg"/>
     </div>

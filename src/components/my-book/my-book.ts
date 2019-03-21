@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AlertController } from 'ionic-angular';
+import { AlertController, Events } from 'ionic-angular';
 
 @Component({
   selector: 'my-book',
@@ -12,6 +12,7 @@ export class MyBookComponent {
 
   _book: any;
   _index: any;
+  _emitData: any;
 
   @Input()
   set book(data) {
@@ -29,27 +30,51 @@ export class MyBookComponent {
     return this._index;
   }
 
+  @Input()
+  set emitData(data) {
+    this._emitData = data;
+  }
+  get emitData() {
+    return this._emitData
+  }
+
   @Output()
   findBook = new EventEmitter();
 
+  @Output()
+  setMyBook = new EventEmitter();
+
   bookInputData = {
-    title: null,
-    text: null
+    title: '',
+    text: '',
+    image: ''
   };
 
   constructor(private alertCtrl: AlertController,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private events: Events) {
 
   }
 
-  public setMyBookStyle(index) {
-    if (index === null || index === undefined) {
+  ngOnInit() {
+    this._addEvents();
+  }
+
+  ngOnDestroy() {
+    this._removeEvents();
+  }
+
+  ngOnChanges(changes) {
+
+  }
+
+  public setMyBookStyle() {
+    if (this.isMakingMyBook()) {
       return {
-        'width': '90%',
-        'margin-left': '5%'
+        'margin-left': '12.5%'
       };
     } else {
-      if (index % 2 === 0) {
+      if (this.index % 2 === 0) {
         // Nothing
       } else {
         return {'margin-left': '25%'};
@@ -87,6 +112,10 @@ export class MyBookComponent {
     alert.present();
   }
 
+  public isMakingMyBook() {
+    return this.index === null || this.index === undefined;
+  }
+
   /**
    * Private function
    */
@@ -108,6 +137,44 @@ export class MyBookComponent {
     })
   }
 
+  private _emitMyBookData() {
+    console.log('Emit making book data');
+
+    let makingBookTitle = this._getBookTitle(),
+        makingBookImage = this._getBookImage();
+
+    if (!!!makingBookTitle || makingBookTitle === '') {
+      this._showInputAlarmModal('책 제목을 입력해주세요.');
+      return;
+    }
+
+    if (!!!makingBookImage || makingBookImage === '') {
+      this._showInputAlarmModal('책 사진을 올려주세요.');
+      return;
+    }
+
+    this.setMyBook.emit({
+      title: this._getBookTitle(),
+      image: this._getBookImage(),
+      text: this.bookInputData.text
+    });
+  }
+
+  private _getBookTitle() {
+    if (!!this.book.title) {
+      return this.book.title;
+    }
+
+    return this.bookInputData.title;
+  }
+
+  private _getBookImage() {
+    if (!!this.book.image) {
+      return this.book.image;
+    }
+
+    return this.bookInputData.image;
+  }
 
   private _showFindErrorModal(error) {
     let alert = this.alertCtrl.create({
@@ -125,4 +192,33 @@ export class MyBookComponent {
     alert.present();
   }
 
+  private _showInputAlarmModal(content) {
+    let alert = this.alertCtrl.create({
+      title: '알림',
+      message: content,
+      buttons: [
+        {
+          text: '확인',
+          handler: () => {
+            // Nothing
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  private _addEvents() {
+    if (this.isMakingMyBook()) {
+      this.events.subscribe('addBookPage.emit.myBookComp', () => {
+        this._emitMyBookData();
+      });
+    }
+  }
+
+  private _removeEvents() {
+    if (this.isMakingMyBook()) {
+      this.events.unsubscribe('addBookPage.emit.myBookComp');
+    }
+  }
 }

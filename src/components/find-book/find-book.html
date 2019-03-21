@@ -1,5 +1,8 @@
 <div class="findbook-container" (click)=selectBook() [ngStyle]=setSelectedStyle()>
   <div class="findbook-content">
+    <div class="findbook-check-image" *ngIf=isSelectedBook()>
+      <img src="assets/imgs/findbook-check.svg"/>
+    </div>
     <div class="findbook-cc-left">
       <img src={{book.thumbnail}}>
     </div>

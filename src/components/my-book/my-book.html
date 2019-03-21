@@ -1,11 +1,11 @@
-<div class="mybook-container" [ngStyle]="setMyBookStyle(index)">
+<div class="mybook-container" [ngStyle]="setMyBookStyle()">
   <div class="mybook-content">
     <div class="mybook-cc-title-container">
       <div *ngIf="!!book.title">
         {{book.title}}
       </div>
       <div class="mybook-cc-title-input" *ngIf="!!!book.title">
-        <input class="mybook-cc-find-input" placeholder="제목을 입력해주세요." ([ngModel])="bookInputData.title"/>
+        <input class="mybook-cc-find-input" placeholder="제목을 입력해주세요." [(ngModel)]=bookInputData.title/>
       </div>
     </div>
     <div class="mybook-cc-image-container">
@@ -30,7 +30,7 @@
       <div [innerHTML]=book.text *ngIf="!!book.text">
       </div>
       <div *ngIf="!!!book.text">
-        <textarea class="mybook-cc-textarea" placeholder="한줄 평을 적어보세요." ([ngModel])="bookInputData.text"></textarea>
+        <textarea class="mybook-cc-textarea" placeholder="한줄 평을 적어보세요." [(ngModel)]=bookInputData.text *ngIf="isMakingMyBook()"></textarea>
       </div>
     </div>
   </div>

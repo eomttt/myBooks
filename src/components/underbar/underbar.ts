@@ -1,4 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+
+// Import pages
+import { MainPage } from '../../pages/main/main';
+import { AddBookPage } from '../../pages/add-book/add-book';
+import { ProfilePage } from '../../pages/profile/profile';
 
 @Component({
   selector: 'underbar',
@@ -16,16 +22,31 @@ export class UnderbarComponent {
     return this._nowView;
   }
 
-  constructor() {
+  constructor(private navCtrl: NavController,
+              private navParams: NavParams) {
 
+  }
+
+  public setShowViewStyle() {
+    return {'background-color': 'black'};
   }
 
   public isNowView(view) {
     return this.nowView === view;
   }
 
-  public setShowViewStyle() {
-    return {'background-color': 'black'};
+  public openMainPage() {
+    this.navCtrl.setRoot(MainPage);
+  }
+
+  public openAddBookPage() {
+    this.navCtrl.push(AddBookPage);
+  }
+
+  public openProfilePage() {
+    if (this.isNowView('main')) {
+      this.navCtrl.push(ProfilePage);
+    }
   }
 
 }

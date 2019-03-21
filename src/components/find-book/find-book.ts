@@ -27,14 +27,18 @@ export class FindBookComponent {
   }
 
   @Output()
-  select = new EventEmitter;
+  select = new EventEmitter();
 
   constructor() {
 
   }
 
+  public isSelectedBook() {
+    return !!this.book.select;
+  }
+
   public setSelectedStyle() {
-    if (!!this.book.select) {
+    if (this.isSelectedBook()) {
       return {
         'border': '1px solid #488aff'
       };

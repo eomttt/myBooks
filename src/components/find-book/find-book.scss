@@ -12,6 +12,7 @@ find-book {
 .findbook-content {
   padding: .5em;
   white-space: nowrap;
+  position: relative;
 }
 
 .findbook-cc-left {
@@ -41,4 +42,11 @@ find-book {
 
 .findbook-ccr-bottom {
   margin-bottom: .5em;
+}
+
+.findbook-check-image {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 2em;
 }

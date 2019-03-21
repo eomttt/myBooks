@@ -17,7 +17,7 @@ export class FindBooksComponent {
   }
 
   @Output()
-  select = new EventEmitter;
+  select = new EventEmitter();
 
   constructor() {
   }
