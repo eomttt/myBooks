@@ -1,6 +1,6 @@
 <upperbar [leftText]=upperbarLeftText [rightText]=upperbarRightText (clickLeft)=clickCancleButton($event) (clickRight)=clickConfirmButton($event)></upperbar>
 <ion-content padding>
-  <div class="addbook-top">
+  <div class="addbook-top" *ngIf=showFindBookList>
     책을 눌러서 선택해 보세요.
   </div>
   <div class="addbook-container">

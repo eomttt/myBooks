@@ -4,9 +4,15 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Camera } from '@ionic-native/camera';
+import { Crop } from '@ionic-native/crop';
+import { File } from '@ionic-native/file';
+import { Base64 } from '@ionic-native/base64';
+
 
 import { MyApp } from './app.component';
 import { ComponentsModule } from '../components/components.module';
+import { AngularCropperjsModule } from 'angular-cropperjs';
 
 // Import pages
 import { MainPageModule } from '../pages/main/main.module';
@@ -24,6 +30,7 @@ import { BooksProvider } from '../providers/books/books';
     ComponentsModule,
     BrowserModule,
     HttpClientModule,
+    AngularCropperjsModule,
     IonicModule.forRoot(MyApp),
     MainPageModule,
     AddBookPageModule,
@@ -36,6 +43,10 @@ import { BooksProvider } from '../providers/books/books';
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
+    Crop,
+    File,
+    Base64,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     BooksProvider
   ]

@@ -10,7 +10,7 @@
     </div>
     <div class="mybook-cc-image-container">
       <img src={{book.image}} *ngIf="!!book.image"/>
-      <div class="mybook-cc-input-image" *ngIf="!!!book.image">
+      <div #bookInputImage class="mybook-cc-input-image" *ngIf="!!!book.image" [ngStyle]="setInputImageStyle()">
         <div class="mybook-cc-ii-top" (click)=researchBook()>
           <div class="mybook-cc-ii-content">
             책 검색하기

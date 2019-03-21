@@ -26,4 +26,12 @@ export class FindBooksComponent {
     this.select.emit(data);
   }
 
+  public hasBooks() {
+    if (!!this.bookList) {
+      return this.bookList.length > 0;
+    }
+
+    return false;
+  }
+
 }

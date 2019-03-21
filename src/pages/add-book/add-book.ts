@@ -41,7 +41,7 @@ export class AddBookPage {
   }
 
   public findBook(data) {
-    this.findBookList = this.findBookList.concat(data);
+    this.findBookList = data;
     this.showFindBookList = true;
   }
 

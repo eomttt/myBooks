@@ -1,12 +1,18 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AlertController, Events } from 'ionic-angular';
+import { AlertController, Events, Platform, normalizeURL } from 'ionic-angular';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Crop, CropOptions } from '@ionic-native/crop';
+import { File } from '@ionic-native/file';
+import { Base64 } from '@ionic-native/base64';
 
 @Component({
   selector: 'my-book',
   templateUrl: 'my-book.html'
 })
 export class MyBookComponent {
+
+  @ViewChild('bookInputImage') bookInputImageEl: ElementRef;
 
   FINDING_BOOK_URL = 'https://book.naver.com/search/search.nhn?query=';
 
@@ -52,6 +58,11 @@ export class MyBookComponent {
 
   constructor(private alertCtrl: AlertController,
               private http: HttpClient,
+              private platform: Platform,
+              private camera: Camera,
+              private crop: Crop,
+              private file: File,
+              private base64: Base64,
               private events: Events) {
 
   }
@@ -82,8 +93,127 @@ export class MyBookComponent {
     }
   }
 
-  public setDirectImage() {
-    // TO DO: Take picture or Get from library
+  public setInputImageStyle() {
+    if (!!this.bookInputImageEl) {
+      const width = this.bookInputImageEl.nativeElement.offsetWidth;
+      const style = { height: width * 1.414 + 'px'};
+
+      return style;
+    }
+  }
+
+  public async setDirectImage() {
+    try {
+      let imageUri: any = await this._getImageFromLibrary();
+      console.log("AAAA", imageUri);
+      let croppedImageUri: any = await this._openCropImage(imageUri);
+      console.log("BBBB", croppedImageUri);
+      let imageFile: any = await this._resolveLocalFileSystemUrl(croppedImageUri);
+      console.log("CCC", imageFile);
+
+      let newImageUri = null;
+
+      if (this.platform.is('ios')) {
+        newImageUri = normalizeURL(croppedImageUri);
+      } else {
+        newImageUri = await this._genBase64Url(croppedImageUri);
+        newImageUri = newImageUri.replace(/(\r\n|\n|\r)/gm, '');
+      }
+
+      this.bookInputData.image = newImageUri;
+
+      console.log("DDDD", newImageUri);
+    } catch(error) {
+      if (error === 'No Image Selected') {
+        console.log('No image selected');
+      } else {
+
+      }
+    }
+  }
+
+  private _getImageFromLibrary() {
+    return new Promise(async (resolve, reject) => {
+      const options: CameraOptions = {
+        quality: 30,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit: false,
+        saveToPhotoAlbum: false,
+        correctOrientation: true,
+        mediaType: this.camera.MediaType.PICTURE,
+        targetWidth: 1000,
+        targetHeight: 1414
+      };
+
+      try {
+        let fileUri: any = await this.camera.getPicture(options);
+
+        if (this.platform.is('ios')) {
+
+        } else if (this.platform.is('android')) {
+          fileUri = 'file://' + fileUri;
+        }
+
+        resolve(fileUri);
+
+      } catch(error) {
+        console.log('Get image error.', error);
+        if (error === 'has no access to assets') {
+          resolve(null);
+        } else {
+          reject(error);
+        }
+      }
+    });
+  }
+
+  private _openCropImage(imageUri) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const options: CropOptions = {
+          targetWidth: 1,
+          targetHeight: 1
+        };
+
+        let croppedImage = await this.crop.crop(imageUri, options);
+        resolve(croppedImage);
+      } catch(error) {
+        console.log('Cropped image error.', error);
+        reject(error);
+      }
+    });
+  }
+
+  private _resolveLocalFileSystemUrl(url) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let fileEntry: any = await this.file.resolveLocalFilesystemUrl(url);
+
+        fileEntry.file((fileData) => {
+          resolve(fileData);
+        });
+      } catch(error) {
+        console.log('Resolve local file system error. ', error);
+        reject(error);
+      }
+    });
+  }
+
+  private _genBase64Url(url) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let base64File: any = await this.base64.encodeFile(url);
+        let imageSrc = base64File.split(',');
+
+        let base64Image = 'data:image/jpeg;base64,' + imageSrc[1];
+
+        resolve(base64Image);
+      } catch(error) {
+        console.log('Gen base64 url error.', error);
+        reject(error);
+      }
+    });
   }
 
   public researchBook() {
