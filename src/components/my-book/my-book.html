@@ -9,8 +9,8 @@
       </div>
     </div>
     <div class="mybook-cc-image-container">
-      <img src={{book.image}} *ngIf="!!book.image"/>
-      <div #bookInputImage class="mybook-cc-input-image" *ngIf="!!!book.image" [ngStyle]="setInputImageStyle()">
+      <img src={{book.image}} *ngIf="!!book.image" (load)="onLoadImage()"/>
+      <div #bookInputImage class="mybook-cc-input-image" *ngIf="!!!book.image || showLoading" [ngStyle]="setInputImageStyle()">
         <div class="mybook-cc-ii-top" (click)=researchBook()>
           <div class="mybook-cc-ii-content">
             책 검색하기
@@ -32,6 +32,12 @@
       <div *ngIf="!!!book.text">
         <textarea class="mybook-cc-textarea" placeholder="한줄 평을 적어보세요." [(ngModel)]=bookInputData.text *ngIf="isMakingMyBook()"></textarea>
       </div>
+    </div>
+  </div>
+  <div class="loading-block" *ngIf="showLoading">
+    <ion-spinner name="crescent" class="spinner-dark white-spinner loading-block-icon"></ion-spinner>
+    <div class="loading-block-icon">
+      잠시만 기다려 주세요...
     </div>
   </div>
 </div>

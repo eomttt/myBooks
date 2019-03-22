@@ -73,15 +73,11 @@ export class AddBookPage {
   public async setMyBook(data) {
     try {
       console.log('Set my book.', data);
-      await this.booksPvdr.addMyBook(this._genMyBookData(data));
+      await this.booksPvdr.setBooksData(data);
       this.navCtrl.setRoot(MainPage);
     } catch(error) {
       this._showAddBookError();
     }
-  }
-
-  private _genMyBookData(data) {
-    return this.booksPvdr.genMyBook(data);
   }
 
   public selectedBook(index) {

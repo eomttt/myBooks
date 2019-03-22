@@ -13,6 +13,7 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { AngularFireModule } from '@angular/fire';
 import { firebaseConfig } from '../environment';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 import { MyApp } from './app.component';
 import { ComponentsModule } from '../components/components.module';
@@ -25,6 +26,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 
 // Import providers
 import { BooksProvider } from '../providers/books/books';
+import { AuthProvider } from '../providers/auth/auth';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { BooksProvider } from '../providers/books/books';
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireStorageModule,
+    AngularFireDatabaseModule,
     MainPageModule,
     AddBookPageModule,
     ProfilePageModule
@@ -55,7 +58,8 @@ import { BooksProvider } from '../providers/books/books';
     Base64,
     UniqueDeviceID,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    BooksProvider
+    BooksProvider,
+    AuthProvider
   ]
 })
 export class AppModule {}
