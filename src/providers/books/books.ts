@@ -30,6 +30,13 @@ export class BooksProvider {
 
   }
 
+  public initBooks() {
+    this.booksData = [];
+    this.booksId = [];
+
+    this.isGetAllBooks = false;
+  }
+
   public getMyBooks(firstGet) {
     return new Promise(async (resolve, reject) => {
       try {

@@ -24,11 +24,16 @@ export class MainPage {
   }
 
   ionViewWillLoad() {
-    this._active();
+
   }
 
   ionViewDidLoad() {
 
+  }
+
+  ionViewWillEnter() {
+    this._initBooks();
+    this._getMyBooks(true);
   }
 
   ionViewDidEnter() {
@@ -81,8 +86,8 @@ export class MainPage {
     alert.present();
   }
 
-  private _active() {
-    this._getMyBooks(true);
+  private _initBooks() {
+    this.myBooks = [];
+    this.booksPvdr.initBooks();
   }
-
 }
