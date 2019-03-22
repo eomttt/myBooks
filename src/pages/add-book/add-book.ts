@@ -37,7 +37,7 @@ export class AddBookPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddBookPage');
+
   }
 
   public findBook(data) {

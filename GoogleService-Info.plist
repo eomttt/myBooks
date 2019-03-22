@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>396084188078-vu9bgs35fcu407fcgfgcise70m7a554l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.396084188078-vu9bgs35fcu407fcgfgcise70m7a554l</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC9UrM9ZICS-YM40PKYU3fCJ7u_qwAfZrY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>396084188078</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.eomttt.mybook</string>
+	<key>PROJECT_ID</key>
+	<string>mybookeom</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mybookeom.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:396084188078:ios:520148bd86f5d7e6</string>
+	<key>DATABASE_URL</key>
+	<string>https://mybookeom.firebaseio.com</string>
+</dict>
+</plist>

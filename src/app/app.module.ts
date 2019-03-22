@@ -9,6 +9,7 @@ import { Crop } from '@ionic-native/crop';
 import { File } from '@ionic-native/file';
 import { Base64 } from '@ionic-native/base64';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { AngularFireModule } from '@angular/fire';
 import { firebaseConfig } from '../environment';
@@ -57,6 +58,7 @@ import { AuthProvider } from '../providers/auth/auth';
     File,
     Base64,
     UniqueDeviceID,
+    GooglePlus,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     BooksProvider,
     AuthProvider

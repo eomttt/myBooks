@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { GooglePlus } from '@ionic-native/google-plus';
+
+// Import services
+import { AuthProvider } from '../../providers/auth/auth';
+
 /**
  * Generated class for the ProfilePage page.
  *
@@ -18,11 +23,40 @@ export class ProfilePage {
   nowView = 'profile';
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams) {
+              public navParams: NavParams,
+              private authPvdr: AuthProvider,
+              private googlePlus: GooglePlus) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+  }
+
+  public isAuthUser() {
+    return this.authPvdr.isAuthentication();
+  }
+
+  public openContact() {
+
+  }
+
+  public openPrivacyPolicy() {
+
+  }
+
+  public openTerms() {
+
+  }
+
+  public downLoadBamletter() {
+
+  }
+
+  public register() {
+    this.googlePlus.login().then((res) => {
+      console.log("AAAA", res);
+    }).catch((error) => {
+      console.log("BBB", error);
+    })
   }
 
 }
