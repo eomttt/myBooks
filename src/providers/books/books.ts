@@ -12,8 +12,12 @@ import { AngularFireDatabase } from '@angular/fire/database';
 @Injectable()
 export class BooksProvider {
 
+  GET_BOOK_COUNT = 5;
+
   booksData = [];
   booksId = [];
+
+  isGetAllBooks = false;
 
   constructor(private http: HttpClient,
               private platform: Platform,
@@ -26,56 +30,24 @@ export class BooksProvider {
 
   }
 
-  public getMyBooks() {
+  public getMyBooks(firstGet) {
     return new Promise(async (resolve, reject) => {
       try {
-        let deviceUniqueId = await this.uniqueDeviceID.get();
-        // this.angularFbDb.database(deviceUniqueId + '/books');
-        let databaseRef = this.angularFbDb.database.ref(deviceUniqueId + '/books');
+        let serverData = await this._getBooksFromServer();
+        let assignedData: any = this._assignMyBooks(serverData);
 
-        let booksDataLen = this.booksData.length;
-        let data: any = {};
-        let assignedData: any = {};
-
-        if (booksDataLen > 0) {
-          data = await databaseRef.startAt(this.booksId[booksDataLen - 1]).limitToFirst(5).once('value');
-        } else {
-          data = await databaseRef.orderByKey().limitToFirst(5).once('value');
-        }
-
-        assignedData = this._setMyBooks(data.val());
-        console.log('Get books', assignedData);
-
-        this.booksData = this.booksData.concat(assignedData.values);
+        this._setMyBooks(assignedData, firstGet);
 
         resolve(this.booksData);
       } catch(error) {
+        reject(error);
         console.log('Get my books error', error);
       }
     });
   }
 
-  private _setMyBooks(data) {
-    let booksValue = [],
-        booksKey = [];
-
-    let newBook = {};
-
-    Object.keys(data).map((key) => {
-      newBook = {
-        id: key
-      };
-
-      Object.assign(newBook, data[key]);
-
-      booksKey.push(key);
-      booksValue.push(newBook);
-    });
-
-    return {
-      values: booksValue,
-      keys: booksKey
-    };
+  public isFinGetBooks() {
+    return this.isGetAllBooks;
   }
 
   public setBooksData(saveData) {
@@ -145,6 +117,73 @@ export class BooksProvider {
   /*
    * Private function
    */
+
+  private _getBooksFromServer() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let deviceUniqueId = await this.uniqueDeviceID.get();
+        let databaseRef = this.angularFbDb.database.ref(deviceUniqueId + '/books');
+
+        let booksDataLen = this.booksData.length;
+        let data: any = {};
+
+        if (booksDataLen > 0) {
+          data = await databaseRef.orderByKey().limitToLast(this.GET_BOOK_COUNT + 1).endAt(this.booksId[booksDataLen - 1]).once('value');
+        } else {
+          data = await databaseRef.orderByKey().limitToLast(this.GET_BOOK_COUNT).once('value');
+        }
+
+        resolve(data.val());
+      } catch(error) {
+        reject(error);
+      }
+    });
+  }
+
+  private _assignMyBooks(data) {
+    let booksValue = [],
+        booksKey = [];
+
+    let newBook = {};
+
+    Object.keys(data)
+      .sort()
+      .reverse()
+      .map((key) => {
+        newBook = {
+          id: key
+        };
+
+        Object.assign(newBook, data[key]);
+
+        booksKey.push(key);
+        booksValue.push(newBook);
+    });
+
+    return {
+      values: booksValue,
+      keys: booksKey
+    };
+  }
+
+  private _setMyBooks(assignedData, firstGet) {
+    if (!firstGet) {
+      assignedData.values.shift();
+      assignedData.keys.shift();
+    }
+
+    if (assignedData.values.length > 0) {
+      if (assignedData.values.length < this.GET_BOOK_COUNT) {
+        console.log('Get all books.');
+        this.isGetAllBooks = true;
+      }
+      this.booksData = this.booksData.concat(assignedData.values);
+      this.booksId = this.booksId.concat(assignedData.keys);
+    } else {
+      console.log('Get no books. (has no)');
+      this.isGetAllBooks = true;
+    }
+  }
 
   private _getImageFromLibrary() {
     return new Promise(async (resolve, reject) => {

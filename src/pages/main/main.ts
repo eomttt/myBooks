@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController, Content } from 'ionic-angular';
 
 // Import providers
 import { BooksProvider } from '../../providers/books/books';
@@ -11,10 +11,11 @@ import { BooksProvider } from '../../providers/books/books';
   templateUrl: 'main.html',
 })
 export class MainPage {
+  @ViewChild(Content) content: Content;
 
   nowView = 'main';
 
-  myBooks = [];
+  myBooks: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -30,28 +31,39 @@ export class MainPage {
 
   }
 
-  /**
-   * Private function
-   */
+  ionViewDidEnter() {
+    this.content.resize();
+  }
 
-  private async _getMyBooks() {
+  public async loadMore(infiniteScroll) {
     try {
-      let books = await this.booksPvdr.getMyBooks();
-
-      this._setMyBooks(books);
+      await this._getMyBooks(false);
+      infiniteScroll.complete();
     } catch(error) {
-      this._showGetBooksError(error);
+      infiniteScroll.complete();
     }
   }
 
-  private _setMyBooks(newBooks) {
-    console.log('Set new books', newBooks);
-    this.myBooks = this.myBooks.concat(newBooks);
+  public hasNextBook() {
+    return !this.booksPvdr.isFinGetBooks();
   }
 
   /**
    * Private function
    */
+
+  private _getMyBooks(firstGet) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        this.myBooks = await this.booksPvdr.getMyBooks(firstGet);
+
+        resolve();
+      } catch(error) {
+        this._showGetBooksError(error);
+        reject();
+      }
+    });
+  }
 
   private _showGetBooksError(error) {
     let alert = this.alertCtrl.create({
@@ -70,7 +82,7 @@ export class MainPage {
   }
 
   private _active() {
-    this._getMyBooks();
+    this._getMyBooks(true);
   }
 
 }
