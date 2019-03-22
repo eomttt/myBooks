@@ -5,6 +5,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Crop, CropOptions } from '@ionic-native/crop';
 import { File } from '@ionic-native/file';
 import { Base64 } from '@ionic-native/base64';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+
 import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
@@ -64,6 +66,7 @@ export class MyBookComponent {
               private crop: Crop,
               private file: File,
               private base64: Base64,
+              private uniqueDeviceID: UniqueDeviceID,
               private events: Events,
               private angularFbSt: AngularFireStorage) {
 
@@ -107,36 +110,84 @@ export class MyBookComponent {
   public async setDirectImage() {
     try {
       let imageUri: any = await this._getImageFromLibrary();
-      console.log('Library image uri: ', imageUri);
-      
+      console.log('Library image uri: ' + imageUri);
+
       let croppedImageUri: any = await this._openCropImage(imageUri);
-      console.log('Cropped image uri: ', croppedImageUri);
-      
+      console.log('Cropped image uri: ' + croppedImageUri);
+
       let imageFile: any = await this._resolveLocalFileSystemUrl(croppedImageUri);
       console.log('Image file: ', imageFile);
-      
-      let uploadedRes = await this._setToImageInDb(imageFile);
+
+      let blobFile: any = await this._blobFileUri(imageFile);
+      console.log('Blob image file: ', blobFile);
+
+      let imageName: any = await this._genImageName();
+      let uploadedRes = await this._setToImageInDb(blobFile, imageName);
       console.log('Uploaded image result: ', uploadedRes);
 
-      let newImageUri = null;
-
-      if (this.platform.is('ios')) {
-        newImageUri = normalizeURL(croppedImageUri);
-      } else {
-        newImageUri = await this._genBase64Url(croppedImageUri);
-        newImageUri = newImageUri.replace(/(\r\n|\n|\r)/gm, '');
-      }
+      let newImageUri: any = await this._getImageInDb(imageName);
+      console.log('New image uri: ', newImageUri);
 
       this.bookInputData.image = newImageUri;
-
-      console.log('New image uri: ', newImageUri);
+      this.book.image = newImageUri;
     } catch(error) {
       if (error === 'No Image Selected') {
         console.log('No image selected');
       } else {
-
+        console.log('Set direct image error', error);
       }
     }
+  }
+
+  public researchBook() {
+    let alert = this.alertCtrl.create({
+      title: '책을 검색해 보세요.',
+      inputs: [
+        {
+          name: 'researchText',
+          placeholder: '책 제목을 입력해주세요.'
+        }
+      ],
+      buttons: [
+        {
+          text: '취소',
+          handler: () => {
+            // Nothing
+          }
+        },{
+          text: '검색',
+          handler: (data) => {
+            this._findingBook(data.researchText);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  public isMakingMyBook() {
+    return this.index === null || this.index === undefined;
+  }
+
+  /**
+   * Private function
+   */
+
+  private async _findingBook(researchText) {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'KakaoAK 2e780152a42673e30ed1cc206aedc7da',
+      })
+    };
+    let requestUrl = 'https://dapi.kakao.com/v3/search/book?query=' + researchText;
+
+    this.http.get(requestUrl, httpOptions).subscribe((data: any) => {
+      console.log('Finded data', data);
+      this.findBook.emit(data.documents);
+    }, (error) => {
+      console.log('Find book error', error);
+      this._showFindErrorModal(error.error);
+    })
   }
 
   private _getImageFromLibrary() {
@@ -198,17 +249,7 @@ export class MyBookComponent {
         let fileEntry: any = await this.file.resolveLocalFilesystemUrl(url);
 
         fileEntry.file((fileData) => {
-          const fileReader = new FileReader();
-          fileReader.onloadend = (evt: any) => {
-            console.log('File Reader Result: ', evt);
-            let blob = new Blob([evt.target.result], { type: "image/jpeg" });
-            resolve(blob);
-          };
-          fileReader.onerror = function (error) {
-              console.log("Failed file read: " + error.toString());
-              reject(error)
-          };
-          fileReader.readAsArrayBuffer(fileData);
+          resolve(fileData);
         });
       } catch(error) {
         console.log('Resolve local file system error. ', error);
@@ -217,13 +258,46 @@ export class MyBookComponent {
     });
   }
 
-  private _setToImageInDb(imageFile) {
+  private _blobFileUri(fileData) {
     return new Promise(async (resolve, reject) => {
-
-      let storageRef = this.angularFbSt.storage.ref();
-      let imageRef = storageRef.child('test');
-
       try {
+        const fileReader = new FileReader();
+        fileReader.onloadend = (evt: any) => {
+          console.log('File Reader Result: ', evt);
+          let blob = new Blob([evt.target.result], { type: "image/jpeg" });
+          resolve(blob);
+        };
+        fileReader.onerror = function (error) {
+            console.log("Failed file read: " + error.toString());
+            reject(error)
+        };
+        fileReader.readAsArrayBuffer(fileData);
+      } catch(error) {
+        console.log('Blob file uri error', error);
+        reject(error);
+      }
+    });
+  }
+
+  private _genImageName() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let nowTime = new Date();
+        let uniqueId = await this.uniqueDeviceID.get();
+        let name = uniqueId + ',' + nowTime.getTime();
+
+        resolve(name);
+      } catch(error) {
+        reject(error);
+      }
+    });
+  }
+
+  private _setToImageInDb(imageFile, imageName) {
+    return new Promise(async (resolve, reject) => {
+      let storageRef = this.angularFbSt.storage.ref('user_book_image');
+      try {
+        let imageRef = storageRef.child(imageName);
         let result = await imageRef.put(imageFile);
         resolve(result);
       } catch(error) {
@@ -233,71 +307,18 @@ export class MyBookComponent {
     });
   }
 
-  private _genBase64Url(url) {
-    return new Promise(async (resolve, reject) => {
+  private _getImageInDb(imageName) {
+    return new Promise(async (resolve, rejet) => {
+      let storageRef = this.angularFbSt.storage.ref('user_book_image');
       try {
-        let base64File: any = await this.base64.encodeFile(url);
-        let imageSrc = base64File.split(',');
+        let imageUrl = await storageRef.child(imageName).getDownloadURL();
 
-        let base64Image = 'data:image/jpeg;base64,' + imageSrc[1];
-
-        resolve(base64Image);
+        resolve(imageUrl);
       } catch(error) {
-        console.log('Gen base64 url error.', error);
-        reject(error);
+        console.log('Get image in database.', error);
+        rejet(error);
       }
     });
-  }
-
-  public researchBook() {
-    let alert = this.alertCtrl.create({
-      title: '책을 검색해 보세요.',
-      inputs: [
-        {
-          name: 'researchText',
-          placeholder: '책 제목을 입력해주세요.'
-        }
-      ],
-      buttons: [
-        {
-          text: '취소',
-          handler: () => {
-            // Nothing
-          }
-        },{
-          text: '검색',
-          handler: (data) => {
-            this._findingBook(data.researchText);
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  public isMakingMyBook() {
-    return this.index === null || this.index === undefined;
-  }
-
-  /**
-   * Private function
-   */
-
-  private async _findingBook(researchText) {
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': 'KakaoAK 2e780152a42673e30ed1cc206aedc7da',
-      })
-    };
-    let requestUrl = 'https://dapi.kakao.com/v3/search/book?query=' + researchText;
-
-    this.http.get(requestUrl, httpOptions).subscribe((data: any) => {
-      console.log('Finded data', data);
-      this.findBook.emit(data.documents);
-    }, (error) => {
-      console.log('Find book error', error);
-      this._showFindErrorModal(error.error);
-    })
   }
 
   private _emitMyBookData() {

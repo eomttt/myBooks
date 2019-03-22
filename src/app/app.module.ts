@@ -8,6 +8,7 @@ import { Camera } from '@ionic-native/camera';
 import { Crop } from '@ionic-native/crop';
 import { File } from '@ionic-native/file';
 import { Base64 } from '@ionic-native/base64';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { AngularFireModule } from '@angular/fire';
 import { firebaseConfig } from '../environment';
@@ -52,6 +53,7 @@ import { BooksProvider } from '../providers/books/books';
     Crop,
     File,
     Base64,
+    UniqueDeviceID,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     BooksProvider
   ]
