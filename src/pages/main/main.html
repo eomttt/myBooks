@@ -1,8 +1,18 @@
 <ion-content padding>
-  <div class="main-mybooks-list">
+  <div class="main-mybooks-list" *ngIf="hasBooks()">
     <div class="main-mybook" *ngFor="let myBook of myBooks; let i = index">
       <my-book [book]=myBook [index]=i></my-book>
     </div>
+  </div>
+  <div class="main-mybooks-list" *ngIf="!hasBooks()">
+    읽은 책을 찾아서 추가해 보세요<br>
+    또한 나만의 한줄 감상평도 남겨 보세요<br>
+    시간이 지난 뒤에 내가 읽었던 책에 대하여 다시금 떠올릴 수 있게 됩니다.<br><br>
+    * 방법 *<br>
+    1. 하단바의 '+' 버튼을 누른다.<br>
+    2. 책을 검색하거나, 직접 제목과 사진을 찍는다.<br>
+    3. 책에 대한 한줄평을 남겨 본다.<br>
+    4. 지금까지 읽었던 책들에 대한 기록을 남겨본다.<br>
   </div>
   <ion-infinite-scroll (ionInfinite)="loadMore($event)" *ngIf="hasNextBook()">
       <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>

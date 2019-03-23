@@ -53,6 +53,10 @@ export class MainPage {
     return !this.booksPvdr.isFinGetBooks();
   }
 
+  public hasBooks() {
+    return this.booksPvdr.hasBooks();
+  }
+
   /**
    * Private function
    */

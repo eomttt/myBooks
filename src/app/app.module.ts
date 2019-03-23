@@ -10,6 +10,7 @@ import { File } from '@ionic-native/file';
 import { Base64 } from '@ionic-native/base64';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { NativeStorage } from '@ionic-native/native-storage';
 
 import { AngularFireModule } from '@angular/fire';
 import { firebaseConfig } from '../environment';
@@ -59,6 +60,7 @@ import { AuthProvider } from '../providers/auth/auth';
     Base64,
     UniqueDeviceID,
     GooglePlus,
+    NativeStorage,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     BooksProvider,
     AuthProvider

@@ -9,6 +9,8 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireDatabase } from '@angular/fire/database';
 
+import { AuthProvider } from '../auth/auth';
+
 @Injectable()
 export class BooksProvider {
 
@@ -26,7 +28,8 @@ export class BooksProvider {
               private file: File,
               private uniqueDeviceID: UniqueDeviceID,
               private angularFbSt: AngularFireStorage,
-              private angularFbDb: AngularFireDatabase) {
+              private angularFbDb: AngularFireDatabase,
+              private authPvdr: AuthProvider) {
 
   }
 
@@ -41,7 +44,13 @@ export class BooksProvider {
     return new Promise(async (resolve, reject) => {
       try {
         let serverData = await this._getBooksFromServer();
+
+        console.log('Get from server data', serverData);
+
         let assignedData: any = this._assignMyBooks(serverData);
+
+        console.log('Assigned data', assignedData);
+        console.log('First get ? ', firstGet);
 
         this._setMyBooks(assignedData, firstGet);
 
@@ -57,11 +66,53 @@ export class BooksProvider {
     return this.isGetAllBooks;
   }
 
-  public setBooksData(saveData) {
+  public migrationDeviceIdToUserId() {
     return new Promise(async (resolve, reject) => {
       try {
         let deviceUniqueId = await this.uniqueDeviceID.get();
-        let databaseRef = this.angularFbDb.list(deviceUniqueId + '/books');
+        let userInfo = this.authPvdr.getUser();
+        let userId = userInfo.userId;
+
+        let userDatabaseRef = this.angularFbDb.database.ref(userId + '/books');
+        let deviceDatabasRef = this.angularFbDb.database.ref(deviceUniqueId + '/books');
+
+        let dataByUserId: any = await userDatabaseRef.orderByKey().limitToLast(this.GET_BOOK_COUNT).once('value');
+
+        if (!!dataByUserId.val()) {
+          // Already migration
+
+          console.log('Aleady migration, stop migration');
+        } else {
+          console.log('Start migration');
+          let dataByDevice: any= await deviceDatabasRef.orderByKey().limitToLast(this.GET_BOOK_COUNT).once('value');
+          let assignedData: any = this._assignMyBooks(dataByDevice.val());
+          let assignedValue: any = assignedData.values;
+          for (let i=0, len = assignedValue.length; i<len; i++) {
+            await this.setBooksData(assignedValue[i]);
+          }
+        }
+
+        resolve();
+      } catch(error) {
+        console.log('Migration error', error);
+        reject(error);
+      }
+    });
+  }
+
+  public setBooksData(saveData) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let rootDir = await this.uniqueDeviceID.get();
+        if (this.authPvdr.isAuthentication()) {
+          let userInfo = this.authPvdr.getUser();
+
+          rootDir = userInfo.userId;
+
+          console.log('Set books data root', rootDir);
+        }
+
+        let databaseRef = this.angularFbDb.list(rootDir + '/books');
         databaseRef.valueChanges();
 
         await databaseRef.push(saveData);
@@ -120,6 +171,10 @@ export class BooksProvider {
     });
   }
 
+  public hasBooks() {
+    return this.booksId.length > 0; 
+  }
+
 
   /*
    * Private function
@@ -128,8 +183,16 @@ export class BooksProvider {
   private _getBooksFromServer() {
     return new Promise(async (resolve, reject) => {
       try {
-        let deviceUniqueId = await this.uniqueDeviceID.get();
-        let databaseRef = this.angularFbDb.database.ref(deviceUniqueId + '/books');
+        let rootDir = await this.uniqueDeviceID.get();
+        if (this.authPvdr.isAuthentication()) {
+          let userInfo = this.authPvdr.getUser();
+
+          rootDir = userInfo.userId;
+        }
+
+        console.log('Get books data root', rootDir);
+
+        let databaseRef = this.angularFbDb.database.ref(rootDir + '/books');
 
         let booksDataLen = this.booksData.length;
         let data: any = {};
@@ -151,21 +214,15 @@ export class BooksProvider {
     let booksValue = [],
         booksKey = [];
 
-    let newBook = {};
-
-    Object.keys(data)
-      .sort()
-      .reverse()
-      .map((key) => {
-        newBook = {
-          id: key
-        };
-
-        Object.assign(newBook, data[key]);
-
-        booksKey.push(key);
-        booksValue.push(newBook);
-    });
+    if (!!data) {
+      Object.keys(data)
+        .sort()
+        .reverse()
+        .map((key) => {
+          booksKey.push(key);
+          booksValue.push(data[key]);
+      });
+    }
 
     return {
       values: booksValue,
