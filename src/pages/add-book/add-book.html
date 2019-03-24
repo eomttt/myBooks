@@ -1,4 +1,4 @@
-<upperbar class="background-image-in-app" [leftText]=upperbarLeftText [rightText]=upperbarRightText (clickLeft)=clickCancleButton($event) (clickRight)=clickConfirmButton($event)></upperbar>
+<upperbar class="background-image-bar" [leftText]=upperbarLeftText [rightText]=upperbarRightText (clickLeft)=clickCancleButton($event) (clickRight)=clickConfirmButton($event)></upperbar>
 <ion-content class="background-image-in-app" padding>
   <div class="addbook-top" *ngIf=showFindBookList>
     책을 눌러서 선택해 보세요.
@@ -10,7 +10,7 @@
     </div>
   </div>
 </ion-content>
-<div class="addbook-explicate-container" *ngIf=!showFindBookList>
+<div class="background-image-in-app addbook-explicate-container" *ngIf=!showFindBookList>
   * '책 검색하기' 는 자동으로,<br>제목과 사진이 첨부 됩니다.<br><br>
   * '직접 올리기' 는 직접 사진을 올리고,<br>제목을 입력해야 합니다.
 </div>

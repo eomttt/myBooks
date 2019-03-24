@@ -1,5 +1,8 @@
 <div class="mybook-container" [ngStyle]="setMyBookStyle()">
   <div class="mybook-content">
+    <div class="mybook-menu" *ngIf=!isMakingMyBook() (click)="reviseBook()">
+      <img src="assets/imgs/mybook-menu-icon.svg">
+    </div>
     <div class="mybook-cc-title-container">
       <div *ngIf="!!book.title">
         {{book.title}}

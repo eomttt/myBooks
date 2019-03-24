@@ -2,9 +2,10 @@ upperbar {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 5em;
-  background-color: white;
+  height: 4.5em;
   z-index: 100;
+  background-color: #f4eee1;
+  border-bottom: 1px solid #222222;
 }
 
 .upperbar-container {

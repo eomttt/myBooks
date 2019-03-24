@@ -15,6 +15,10 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+div {
+  color: #222222;
+}
+
 .loading-block {
   position: absolute;
   top: 0;
@@ -32,10 +36,15 @@
 }
 
 .background-image-in-app {
-  background-color: navy;
-  /*background-image: url('../assets/imgs/background-image.png');*/
+  /*background-image: url('https://s3.ap-northeast-2.amazonaws.com/savanna-letter-image/paper/paper_8.jpg');*/
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  /*background-color: initial;*/
+  background-color: #f4eee1;
+}
+
+.background-image-bar {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
