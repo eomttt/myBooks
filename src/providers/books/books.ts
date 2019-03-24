@@ -40,6 +40,37 @@ export class BooksProvider {
     this.isGetAllBooks = false;
   }
 
+  public getBooksLen() {
+    return this.booksId.length;
+  }
+
+  public removeBook(index) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let rootDir = await this.uniqueDeviceID.get();
+        if (this.authPvdr.isAuthentication()) {
+          let userInfo = this.authPvdr.getUser();
+
+          rootDir = userInfo.userId;
+
+          console.log('Set books data root', rootDir);
+        }
+
+        let databaseRef = this.angularFbDb.list(rootDir + '/books/' + this.booksId[index]);
+        databaseRef.valueChanges();
+
+        await databaseRef.remove();
+
+        this.booksData.splice(index, 1);
+        this.booksId.splice(index, 1);
+        resolve();
+      } catch(error) {
+        console.log('Save books data error. ', error);
+        reject(error);
+      }
+    });  
+  }
+
   public getMyBooks(firstGet) {
     return new Promise(async (resolve, reject) => {
       try {

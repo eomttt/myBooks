@@ -6,7 +6,7 @@
   <div class="addbook-container">
     <div class="addbook-content">
       <my-book [book]=newAddingBook [index]=null (findBook)=findBook($event) (setMyBook)=setMyBook($event)></my-book>
-      <find-books [bookList]=findBookList (select)=selectedBook($event) *ngIf=showFindBookList></find-books>
+      <find-books class="background-image-in-app" [bookList]=findBookList (select)=selectedBook($event) *ngIf=showFindBookList></find-books>
     </div>
   </div>
 </ion-content>

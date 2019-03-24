@@ -5,7 +5,7 @@ find-book {
 .findbook-container {
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 2em;
+  padding-top: 2em;
   border-bottom: 1px solid gray;
 }
 
@@ -46,7 +46,7 @@ find-book {
 
 .findbook-check-image {
   position: absolute;
-  top: 1em;
+  top: -1.5em;
   right: 1em;
-  width: 2em;
+  width: 1.5em;
 }

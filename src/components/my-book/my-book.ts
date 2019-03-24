@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core'
-import { AlertController, Events } from 'ionic-angular';
+import { AlertController, ActionSheetController, Events } from 'ionic-angular';
 
 // Import services
 import { BooksProvider } from '../../providers/books/books';
@@ -55,6 +55,7 @@ export class MyBookComponent {
   showLoading = false;
 
   constructor(private alertCtrl: AlertController,
+              private actionSheetCtrl: ActionSheetController,
               private events: Events,
               private booksPvdr: BooksProvider
               ) {
@@ -96,6 +97,36 @@ export class MyBookComponent {
         return style;
       }
     }
+  }
+
+  public openActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create ({
+      buttons: [
+        {
+          text: '수정하기',
+          handler: () => {
+            this._reviseBook();
+          }
+        },
+        {
+          text: '삭제하기',
+          cssClass: 'actionsheet-delete',
+          handler: () => {
+            this._removeBook();
+          }
+        },
+      ]
+    });
+
+    actionSheet.present();
+  }
+
+  private _reviseBook() {
+
+  }
+
+  private _removeBook() {
+    return this.booksPvdr.removeBook(this.index);
   }
 
   public async setDirectImage() {

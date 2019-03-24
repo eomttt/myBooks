@@ -4,9 +4,11 @@ import { IonicPage, NavController, NavParams, AlertController, Events } from 'io
 // Import providers
 import { BooksProvider } from '../../providers/books/books';
 import { AdmobProvider } from '../../providers/admob/admob';
+import { AuthProvider } from '../../providers/auth/auth';
 
 // Import pages
 import { MainPage } from '../main/main';
+import { ProfilePage } from '../profile/profile';
 
 /**
  * Generated class for the AddBookPage page.
@@ -35,6 +37,7 @@ export class AddBookPage {
               public navParams: NavParams,
               private booksPvdr: BooksProvider,
               private admobPvdr: AdmobProvider,
+              private authPvdr: AuthProvider,
               private events: Events) {
   }
 
@@ -78,13 +81,82 @@ export class AddBookPage {
   }
 
   public async setMyBook(data) {
+    if (this.authPvdr.isAuthentication()) {
+      this._setMyBook(data);
+    } else {
+      if (this._isOverDemo()) {
+        this._showLoginAlarm();
+      } else if (this._isShowWarn()) {
+        this._showLoginWarnAlarm(data);
+      } else {
+        this._setMyBook(data);
+      }
+    }
+  }
+
+  private _isOverDemo() {
+    return this.booksPvdr.getBooksLen() >= 5;
+  }
+
+  private _isShowWarn() {
+    return this.booksPvdr.getBooksLen() >= 3 ;
+  }
+
+  private _showLoginWarnAlarm(data) {
+    let alert = this.alertCtrl.create({
+      title: '알림',
+      message: '로그인을 하지 않으면 최대 5장 까지 밖에 저장 할 수 없습니다. 로그인은 프로필 창에서 가능합니다.',
+      buttons: [
+        {
+          text: '확인',
+          handler: () => {
+            this._setMyBook(data);
+          }
+        }
+      ]
+    });
+    alert.present();     
+  }
+
+  private _showLoginAlarm() {
+    let alert = this.alertCtrl.create({
+      title: '알림',
+      message: '로그인을 해야 더 저장 할 수 있습니다. (로그인을 하지 않으면 최대 5장 까지만 저장됩니다.)',
+      buttons: [
+        {
+          text: '취소',
+          handler: () => {
+            // Nothing
+          }
+        },
+        {
+          text: '로그인 하기',
+          handler: () => {
+            this.navCtrl.setRoot(ProfilePage);
+          }
+        }
+      ]
+    });
+    alert.present();    
+  }
+
+  private async _setMyBook(data) {
     try {
       console.log('Set my book.', data);
       await this.booksPvdr.setBooksData(data);
-      this._showAddBookAdInterstital();
+
+      if (this._isShowAdPaper()) {
+        this._showAddBookAdInterstital();
+      } else {
+        this.navCtrl.setRoot(MainPage);
+      }
     } catch(error) {
       this._showAddBookError();
-    }
+    }    
+  }
+
+  private _isShowAdPaper() {
+    return this.booksPvdr.getBooksLen() % 3 === 0 && this.booksPvdr.getBooksLen() !== 0;
   }
 
   public selectedBook(index) {

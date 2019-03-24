@@ -3,7 +3,7 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://192.168.0.3:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -90,9 +90,8 @@
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.396084188078-vu9bgs35fcu407fcgfgcise70m7a554l" />
     </plugin>
+    <engine name="ios" spec="4.5.5" />
     <plugin name="cordova-plugin-nativestorage" spec="2.3.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
     <plugin name="cordova-plugin-admob-free" spec="0.25.0" />
-    <allow-navigation href="http://192.168.0.3:8100" sessionid="9f0cc3e5" />
-    <engine name="ios" spec="4.5.5" />
 </widget>

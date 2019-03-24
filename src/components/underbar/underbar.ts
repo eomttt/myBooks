@@ -28,7 +28,7 @@ export class UnderbarComponent {
   }
 
   public setShowViewStyle() {
-    return {'background-color': 'black'};
+    return {'background-color': '#333333'};
   }
 
   public isNowView(view) {

@@ -16,7 +16,7 @@
 // automatically applied to the <body> element in the app.
 
 div {
-  color: #222222;
+  color: #333333;
 }
 
 .loading-block {
@@ -26,6 +26,10 @@ div {
   right: 0;
   bottom: 0;
   z-index: 1000000;
+}
+
+.actionsheet-delete {
+  color: #ff1720 !important;
 }
 
 .loading-block-icon {
