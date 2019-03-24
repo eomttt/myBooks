@@ -34,7 +34,11 @@ export class FindBookComponent {
   }
 
   public isSelectedBook() {
-    return !!this.book.select;
+    if (!!this.book) {
+      return !!this.book.select;
+    }
+
+    return false;
   }
 
   public setSelectedStyle() {

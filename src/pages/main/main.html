@@ -1,4 +1,4 @@
-<ion-content padding>
+<ion-content class="background-image-in-app" padding>
   <div class="main-mybooks-list" *ngIf="hasBooks()">
     <div class="main-mybook" *ngFor="let myBook of myBooks; let i = index">
       <my-book [book]=myBook [index]=i></my-book>
@@ -18,4 +18,4 @@
       <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
-<underbar [nowView]=nowView></underbar>
+<underbar class="background-image-in-app" [nowView]=nowView></underbar>

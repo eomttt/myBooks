@@ -4,9 +4,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AuthProvider } from '../providers/auth/auth';
+import { AdmobProvider } from '../providers/admob/admob';
 
 import { MainPage } from '../pages/main/main';
-import { ProfilePage } from '../pages/profile/profile';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,10 +15,13 @@ export class MyApp {
   @ViewChild(Nav)
   nav: Nav;
 
+  PUBLIC_MODE = false;
+
   constructor(platform: Platform,
               statusBar: StatusBar,
               splashScreen: SplashScreen,
-              private authPvdr: AuthProvider) {
+              private authPvdr: AuthProvider,
+              private admobPvdr: AdmobProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -31,12 +34,14 @@ export class MyApp {
 
   private async _active() {
     try {
+      this.admobPvdr.init(this.PUBLIC_MODE);
+      this.admobPvdr.hideBanner();
       await this.authPvdr.getUserInfo();
     } catch(error) {
 
     }
 
-    this.nav.setRoot(ProfilePage);   
+    this.nav.setRoot(MainPage);   
   }
 }
 

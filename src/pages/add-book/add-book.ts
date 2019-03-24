@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, Events } from 'io
 
 // Import providers
 import { BooksProvider } from '../../providers/books/books';
+import { AdmobProvider } from '../../providers/admob/admob';
 
 // Import pages
 import { MainPage } from '../main/main';
@@ -33,12 +34,18 @@ export class AddBookPage {
               public navCtrl: NavController,
               public navParams: NavParams,
               private booksPvdr: BooksProvider,
+              private admobPvdr: AdmobProvider,
               private events: Events) {
   }
 
-  ionViewDidLoad() {
-
+  ionViewDidEnter() {
+    this.admobPvdr.showBanner();
   }
+
+  ionViewWillLeave() {
+    this.admobPvdr.hideBanner();
+  }
+
 
   public findBook(data) {
     this.findBookList = data;
@@ -74,7 +81,7 @@ export class AddBookPage {
     try {
       console.log('Set my book.', data);
       await this.booksPvdr.setBooksData(data);
-      this.navCtrl.setRoot(MainPage);
+      this._showAddBookAdInterstital();
     } catch(error) {
       this._showAddBookError();
     }
@@ -91,6 +98,15 @@ export class AddBookPage {
   /*
    * Private function
    */
+
+  private _showAddBookAdInterstital() {
+    this.admobPvdr.showInterstitial();
+
+    this.events.subscribe('admobPvdr.closeInterstitial.addBookPage', () => {
+      this.events.unsubscribe('admobPvdr.closeInterstitial.addBookPage');
+      this.navCtrl.setRoot(MainPage);
+    });
+  }
 
   private _getSelectedBook() {
     let selectedIndex = null;

@@ -11,6 +11,8 @@ import { Base64 } from '@ionic-native/base64';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AdMobFree } from '@ionic-native/admob-free';
 
 import { AngularFireModule } from '@angular/fire';
 import { firebaseConfig } from '../environment';
@@ -29,6 +31,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 // Import providers
 import { BooksProvider } from '../providers/books/books';
 import { AuthProvider } from '../providers/auth/auth';
+import { AdmobProvider } from '../providers/admob/admob';
 
 @NgModule({
   declarations: [
@@ -61,9 +64,12 @@ import { AuthProvider } from '../providers/auth/auth';
     UniqueDeviceID,
     GooglePlus,
     NativeStorage,
+    InAppBrowser,
+    AdMobFree,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     BooksProvider,
-    AuthProvider
+    AuthProvider,
+    AdmobProvider
   ]
 })
 export class AppModule {}

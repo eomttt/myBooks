@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Platform, Events } from 'ionic-angular';
 
 import { GooglePlus } from '@ionic-native/google-plus';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 // Import services
 import { AuthProvider } from '../../providers/auth/auth';
 import { BooksProvider } from '../../providers/books/books';
+import { AdmobProvider } from '../../providers/admob/admob';
 
 import { MainPage } from '../main/main';
 
@@ -30,30 +32,71 @@ export class ProfilePage {
               private alertCtrl: AlertController,
               private authPvdr: AuthProvider,
               private booksPvdr: BooksProvider,
-              private googlePlus: GooglePlus) {
+              private admobPvdr: AdmobProvider,
+              private googlePlus: GooglePlus,
+              private inAppBrowser: InAppBrowser,
+              private events: Events,
+              private platform: Platform) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    this.admobPvdr.showBanner();
   }
+
+  ionViewWillLeave() {
+    this.admobPvdr.hideBanner();
+  }
+
 
   public isAuthUser() {
     return this.authPvdr.isAuthentication();
   }
 
   public openContact() {
+    this.admobPvdr.showInterstitial();
 
+    this.events.subscribe('admobPvdr.closeInterstitial.profilePage', () => {
+      this.events.unsubscribe('admobPvdr.closeInterstitial.profilePage');
+
+      this._openWeb('https://open.kakao.com/o/skpWswjb');
+    });
   }
 
   public openPrivacyPolicy() {
+    this.admobPvdr.showInterstitial();
 
+    this.events.subscribe('admobPvdr.closeInterstitial.profilePage', () => {
+      this.events.unsubscribe('admobPvdr.closeInterstitial.profilePage');
+
+      this._openWeb('https://firebasestorage.googleapis.com/v0/b/mybookeom.appspot.com/o/views%2Fmybooks-privacy.html?alt=media&token=e04563a9-6ccc-484a-8bb0-d2dad4b01b3b');
+    });
   }
 
   public openTerms() {
+    this.admobPvdr.showInterstitial();
 
+    this.events.subscribe('admobPvdr.closeInterstitial.profilePage', () => {
+      this.events.unsubscribe('admobPvdr.closeInterstitial.profilePage');
+
+      this._openWeb('https://firebasestorage.googleapis.com/v0/b/mybookeom.appspot.com/o/views%2Fmybooks-terms.html?alt=media&token=aaf13069-31e2-4c06-9e06-27c9938fa7d4');
+    });
   }
 
   public downLoadBamletter() {
+    this.admobPvdr.showInterstitial();
 
+    this.events.subscribe('admobPvdr.closeInterstitial.profilePage', () => {
+      this.events.unsubscribe('admobPvdr.closeInterstitial.profilePage');
+
+      if (this.platform.is('android')) {
+        window.open('https://goo.gl/Ed6d1F', '_system');
+      } else if (this.platform.is('ios')) {
+        let browser = this.inAppBrowser.create('https://goo.gl/VvVub8', '_system');
+        browser.show();
+      } else {
+        // Default value
+      }  
+    }); 
   }
 
   public login() {
@@ -81,7 +124,7 @@ export class ProfilePage {
         }, {
           text: '로그아웃',
           handler: () => {
-            this.authPvdr.setUserInfo(null);
+            this._logOut();
           }
         }
       ]
@@ -92,7 +135,29 @@ export class ProfilePage {
   /**
    * Private function
    */
-  
+ 
+  private _logOut() {
+    this.admobPvdr.showInterstitial();
+
+    this.events.subscribe('admobPvdr.closeInterstitial.profilePage', () => {
+      this.events.unsubscribe('admobPvdr.closeInterstitial.profilePage');
+
+      this.authPvdr.setUserInfo(null);
+      this.navCtrl.setRoot(MainPage);
+    });
+  }
+
+  private _openWeb(url) {
+    if (this.platform.is('android')) {
+      window.open(url, '_system');
+    } else if (this.platform.is('ios')) {
+      let browser = this.inAppBrowser.create(url, '_system');
+      browser.show();
+    } else {
+      // Default value
+    }
+  }
+
   private _migrationBooks() {
     return this.booksPvdr.migrationDeviceIdToUserId();
   }

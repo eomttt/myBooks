@@ -30,3 +30,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.background-image-in-app {
+  background-color: navy;
+  /*background-image: url('../assets/imgs/background-image.png');*/
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /*background-color: initial;*/
+}

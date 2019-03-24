@@ -89,10 +89,12 @@ export class MyBookComponent {
 
   public setInputImageStyle() {
     if (!!this.bookInputImageEl) {
-      const width = this.bookInputImageEl.nativeElement.offsetWidth;
-      const style = { height: width * 1.414 + 'px'};
+      if (!!this.bookInputImageEl.nativeElement) {
+        const width = this.bookInputImageEl.nativeElement.offsetWidth;
+        const style = { height: width * 1.414 + 'px'};
 
-      return style;
+        return style;
+      }
     }
   }
 

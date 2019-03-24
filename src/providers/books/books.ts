@@ -87,7 +87,7 @@ export class BooksProvider {
           let dataByDevice: any= await deviceDatabasRef.orderByKey().limitToLast(this.GET_BOOK_COUNT).once('value');
           let assignedData: any = this._assignMyBooks(dataByDevice.val());
           let assignedValue: any = assignedData.values;
-          for (let i=0, len = assignedValue.length; i<len; i++) {
+          for (let len = assignedValue.length, i=len-1; i>=0; i--) {
             await this.setBooksData(assignedValue[i]);
           }
         }
@@ -166,6 +166,7 @@ export class BooksProvider {
 
         resolve(newImageUri);
       } catch(error) {
+        console.log('Set custom book image error.');
         reject(error);
       }
     });
@@ -264,10 +265,12 @@ export class BooksProvider {
       };
 
       try {
-        let fileUri: any = await this.camera.getPicture(options);
+        let fileUri: any = await this.camera.getPicture(options).catch((error) => {
+          throw new Error(error);
+        });
 
         if (this.platform.is('ios')) {
-
+          // Nothing
         } else if (this.platform.is('android')) {
           fileUri = 'file://' + fileUri;
         }
