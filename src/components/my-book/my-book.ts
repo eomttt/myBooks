@@ -103,12 +103,6 @@ export class MyBookComponent {
     let actionSheet = this.actionSheetCtrl.create ({
       buttons: [
         {
-          text: '수정하기',
-          handler: () => {
-            this._reviseBook();
-          }
-        },
-        {
           text: '삭제하기',
           cssClass: 'actionsheet-delete',
           handler: () => {
@@ -119,10 +113,6 @@ export class MyBookComponent {
     });
 
     actionSheet.present();
-  }
-
-  private _reviseBook() {
-
   }
 
   private _removeBook() {
