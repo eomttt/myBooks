@@ -24,7 +24,8 @@ export class AdmobProvider {
   constructor(public http: HttpClient,
               private platform: Platform,
               private events: Events,
-              private admobFree: AdMobFree) {
+              private admobFree: AdMobFree
+             ) {
   }
 
   /**
@@ -62,7 +63,7 @@ export class AdmobProvider {
       console.log('Interstitial not ready.');
       this._prepareInterstitial(true);
     } else {
-      this.admobFree.interstitial.show();
+      // this.admobFree.interstitial.show();
     }
   }
 

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "396084188078",
+    "firebase_url": "https://mybookeom.firebaseio.com",
+    "project_id": "mybookeom",
+    "storage_bucket": "mybookeom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396084188078:android:520148bd86f5d7e6",
+        "android_client_info": {
+          "package_name": "com.eomttt.mybook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396084188078-ql0km27d29hpeu1utfcr6pv97dvnt19i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8yBRMRpYKf2Jbd2kPcrCpLfoxKxCp5ZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

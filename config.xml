@@ -90,8 +90,8 @@
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.396084188078-vu9bgs35fcu407fcgfgcise70m7a554l" />
     </plugin>
-    <engine name="ios" spec="4.5.5" />
     <plugin name="cordova-plugin-nativestorage" spec="2.3.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
-    <plugin name="cordova-plugin-admob-free" spec="0.25.0" />
+    <plugin name="cordova-plugin-admob-free" spec="0.18.0" />
+    <engine name="android" spec="7.1.4" />
 </widget>
