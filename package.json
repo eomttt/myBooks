@@ -22,7 +22,7 @@
     "@angular/platform-browser": "^5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@firebase/database": "^0.2.1",
-    "@ionic-native/admob-free": "^4.16.0",
+    "@ionic-native/admob-free": "^5.3.0",
     "@ionic-native/base64": "^4.20.0",
     "@ionic-native/camera": "^4.20.0",
     "@ionic-native/core": "~4.18.0",
@@ -37,9 +37,9 @@
     "@ionic/storage": "2.2.0",
     "angular-cropperjs": "^0.1.5",
     "com-badrit-base64": "^0.2.0",
-    "cordova-admob-sdk": "0.18.0",
+    "cordova-admob-sdk": "0.22.0",
     "cordova-android": "7.1.4",
-    "cordova-plugin-admob-free": "0.18.0",
+    "cordova-plugin-admob-free": "0.25.0",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-device": "^2.0.2",
@@ -87,7 +87,9 @@
       },
       "cordova-plugin-nativestorage": {},
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-admob-free": {}
+      "cordova-plugin-admob-free": {
+        "ADMOB_APP_ID": "ca-app-pub-9152190009267204~3567622769"
+      }
     },
     "platforms": [
       "android"

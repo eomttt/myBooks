@@ -64,7 +64,9 @@ export class MainPage {
   private _getMyBooks(firstGet) {
     return new Promise(async (resolve, reject) => {
       try {
-        this.myBooks = await this.booksPvdr.getMyBooks(firstGet);
+        this.myBooks = await this.booksPvdr.getMyBooks(firstGet).catch((error) => {
+          throw new Error('Get my books erroir.');
+        });
 
         resolve();
       } catch(error) {
