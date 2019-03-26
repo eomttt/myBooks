@@ -14,6 +14,7 @@ export class UpperbarComponent {
 
   _leftText: any = null;
   _rightText: any = null;
+  _centerText: any = null;
 
 
   @Input()
@@ -30,6 +31,14 @@ export class UpperbarComponent {
   }
   get rightText() {
     return this._rightText;
+  }
+
+  @Input()
+  set centerText(data) {
+    this._centerText = data;
+  }
+  get centerText() {
+    return this._centerText;
   }
 
   @Output()

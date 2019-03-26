@@ -13,6 +13,8 @@ import { BooksProvider } from '../../providers/books/books';
 export class MainPage {
   @ViewChild(Content) content: Content;
 
+  upperbarCenterText = '한줄 독후감';
+
   nowView = 'main';
 
   myBooks: any;
@@ -64,9 +66,7 @@ export class MainPage {
   private _getMyBooks(firstGet) {
     return new Promise(async (resolve, reject) => {
       try {
-        this.myBooks = await this.booksPvdr.getMyBooks(firstGet).catch((error) => {
-          throw new Error('Get my books erroir.');
-        });
+        this.myBooks = await this.booksPvdr.getMyBooks(firstGet);
 
         resolve();
       } catch(error) {

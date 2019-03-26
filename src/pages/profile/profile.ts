@@ -25,6 +25,10 @@ import { MainPage } from '../main/main';
 })
 export class ProfilePage {
 
+  upperbarCenterText = '프로필';
+
+  backUpCount:any = 0;
+
   nowView = 'profile';
 
   constructor(public navCtrl: NavController,
@@ -41,6 +45,8 @@ export class ProfilePage {
 
   ionViewDidEnter() {
     this.admobPvdr.showBanner();
+
+    this._getBackUpCount();
   }
 
   ionViewWillLeave() {
@@ -95,8 +101,8 @@ export class ProfilePage {
         browser.show();
       } else {
         // Default value
-      }  
-    }); 
+      }
+    });
   }
 
   public login() {
@@ -107,6 +113,7 @@ export class ProfilePage {
 
       this.navCtrl.setRoot(MainPage);
     }).catch((error) => {
+      console.log('Login error', error);
       this._showFailLoginAlarm(error);
     })
   }
@@ -135,7 +142,15 @@ export class ProfilePage {
   /**
    * Private function
    */
- 
+
+  private async _getBackUpCount() {
+    try {
+      this.backUpCount = await this.booksPvdr.getBackupCount();
+    } catch(error) {
+      console.log('Get backup count error');
+    }
+  }
+
   private _logOut() {
     this.admobPvdr.showInterstitial();
 

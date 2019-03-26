@@ -92,8 +92,8 @@
     </plugin>
     <plugin name="cordova-plugin-nativestorage" spec="2.3.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
-    <engine name="android" spec="7.1.4" />
     <plugin name="cordova-plugin-admob-free" spec="0.25.0">
         <variable name="ADMOB_APP_ID" value="ca-app-pub-9152190009267204~3567622769" />
     </plugin>
+    <engine name="android" spec="7.1.4" />
 </widget>

@@ -41,7 +41,7 @@ export class MyApp {
 
     }
 
-    this.nav.setRoot(MainPage);   
+    this.nav.setRoot(MainPage);
   }
 }
 

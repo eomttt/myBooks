@@ -1,12 +1,15 @@
 <div class="upperbar-container">
   <div class="upperbar-c-left" (click)="clickLeftSide()">
     <div class="upperbar-c-text">
-      취소
+      {{leftText}}
     </div>
   </div>
   <div class="upperbar-c-right" (click)="clickRightSide()">
     <div class="upperbar-c-text upperbar-c-text-right">
-      확인
+      {{rightText}}
     </div>
+  </div>
+  <div class="upperbar-c-center">
+    {{centerText}}
   </div>
 </div>

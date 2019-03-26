@@ -8,7 +8,6 @@ import { AuthProvider } from '../../providers/auth/auth';
 
 // Import pages
 import { MainPage } from '../main/main';
-import { ProfilePage } from '../profile/profile';
 
 /**
  * Generated class for the AddBookPage page.
@@ -26,6 +25,7 @@ export class AddBookPage {
 
   upperbarLeftText = '취소';
   upperbarRightText = '확인';
+  upperbarCenterText = '독후감 추가';
 
   newAddingBook = {};
 
@@ -84,60 +84,8 @@ export class AddBookPage {
     if (this.authPvdr.isAuthentication()) {
       this._setMyBook(data);
     } else {
-      if (this._isOverDemo()) {
-        this._showLoginAlarm();
-      } else if (this._isShowWarn()) {
-        this._showLoginWarnAlarm(data);
-      } else {
-        this._setMyBook(data);
-      }
+      this._setMyBook(data);
     }
-  }
-
-  private _isOverDemo() {
-    return this.booksPvdr.getBooksLen() >= 5;
-  }
-
-  private _isShowWarn() {
-    return this.booksPvdr.getBooksLen() >= 3 ;
-  }
-
-  private _showLoginWarnAlarm(data) {
-    let alert = this.alertCtrl.create({
-      title: '알림',
-      message: '로그인을 하지 않으면 최대 5장 까지 밖에 저장 할 수 없습니다. 로그인은 프로필 창에서 가능합니다.',
-      buttons: [
-        {
-          text: '확인',
-          handler: () => {
-            this._setMyBook(data);
-          }
-        }
-      ]
-    });
-    alert.present();     
-  }
-
-  private _showLoginAlarm() {
-    let alert = this.alertCtrl.create({
-      title: '알림',
-      message: '로그인을 해야 더 저장 할 수 있습니다. (로그인을 하지 않으면 최대 5장 까지만 저장됩니다.)',
-      buttons: [
-        {
-          text: '취소',
-          handler: () => {
-            // Nothing
-          }
-        },
-        {
-          text: '로그인 하기',
-          handler: () => {
-            this.navCtrl.setRoot(ProfilePage);
-          }
-        }
-      ]
-    });
-    alert.present();    
   }
 
   private async _setMyBook(data) {
@@ -152,7 +100,7 @@ export class AddBookPage {
       }
     } catch(error) {
       this._showAddBookError();
-    }    
+    }
   }
 
   private _isShowAdPaper() {

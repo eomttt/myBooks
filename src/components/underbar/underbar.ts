@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 // Import pages
 import { MainPage } from '../../pages/main/main';
@@ -22,8 +22,7 @@ export class UnderbarComponent {
     return this._nowView;
   }
 
-  constructor(private navCtrl: NavController,
-              private navParams: NavParams) {
+  constructor(private navCtrl: NavController) {
 
   }
 

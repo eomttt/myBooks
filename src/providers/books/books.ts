@@ -44,6 +44,30 @@ export class BooksProvider {
     return this.booksId.length;
   }
 
+  public getBackupCount() {
+    return new Promise(async(resolve, reject) => {
+      let backupCount = 0;
+      try {
+        let userInfo = this.authPvdr.getUser();
+
+        if (!!userInfo) {
+          let userId = userInfo.userId;
+
+          let userDatabaseRef = this.angularFbDb.database.ref(userId + '/books');
+          let dataByUserId: any = await userDatabaseRef.orderByKey().limitToLast(this.GET_BOOK_COUNT).once('value');
+          let assignedData: any = this._assignMyBooks(dataByUserId.val());
+          let assignedValue: any = assignedData.values;
+
+          backupCount = assignedValue.length;
+        }
+      } catch(error) {
+        console.log('Get backup count error', error);
+      }
+
+      resolve(backupCount)
+    });
+  }
+
   public removeBook(index) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -68,7 +92,7 @@ export class BooksProvider {
         console.log('Save books data error. ', error);
         reject(error);
       }
-    });  
+    });
   }
 
   public getMyBooks(firstGet) {

@@ -63,7 +63,7 @@ export class AdmobProvider {
       console.log('Interstitial not ready.');
       this._prepareInterstitial(true);
     } else {
-      // this.admobFree.interstitial.show();
+      this.admobFree.interstitial.show();
     }
   }
 
@@ -77,7 +77,9 @@ export class AdmobProvider {
   }
 
   public hideBanner() {
-    this.admobFree.banner.hide();
+    if (this.bannerReady) {
+      this.admobFree.banner.hide();
+    }
   }
 
   /**

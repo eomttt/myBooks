@@ -30,6 +30,14 @@ div {
 
 .actionsheet-delete {
   color: #ff1720 !important;
+  width: 100%;
+  text-align: center;
+  span {
+    text-align: center;
+    width: 100%;
+    justify-content: center !important;
+    -webkit-justify-content: center !important;
+  }
 }
 
 .loading-block-icon {
