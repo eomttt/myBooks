@@ -1,1 +1,2 @@
-**myBooks app made by Ionic/cordova**
+# myBooks
+myBooks by ionic/cordova
